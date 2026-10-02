@@ -43,5 +43,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: db2csv-apk
+          name: 劳逸时记-app
           path: build/apk/*.apk
