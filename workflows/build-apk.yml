@@ -1,0 +1,47 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.7'    # 明确指定 Flet 所需的 Flutter 版本
+          channel: 'stable'
+
+      - name: Accept Android licenses
+        run: yes | flutter doctor --android-licenses
+
+      - name: Set Flutter environment
+        run: echo "FLUTTER_ROOT=${{ env.FLUTTER_ROOT }}" >> $GITHUB_ENV
+
+      - name: Install Flet
+        run: pip install flet==0.85.1
+
+      - name: Install project dependencies
+        run: pip install webdav4
+
+      - name: Build APK
+        run: flet build apk --yes      # 加上 --yes 跳过交互式询问
+
+      - name: List build/apk directory
+        run: ls -R build/apk/ || echo "build/apk directory not found"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: db2csv-apk
+          path: build/apk/*.apk
