@@ -8,7 +8,7 @@ dependencies = [
 ]
 
 [tool.flet]
-product_name = "数据库导出测试"
+product = "数据库导出测试"
 org = "com.xiaoyi"
 artifact = "db2csv_test"
 bundle_id = "com.xiaoyi.db2csvtest"
